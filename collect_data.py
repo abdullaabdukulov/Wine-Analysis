@@ -69,14 +69,14 @@ def get_wine_data(file, wine_url):
     with open(file, 'r') as openfile:
         # Reading from json file
         json_objects = json.load(openfile)
-    errors = 0
     delimiters = ' ', '\n', '-', '.', '(', ')', ','
     regexPattern = '|'.join(map(re.escape, delimiters))
-    collects = {}
     all_data = [['Name', 'Country', 'Varietal', 'Wine type', 'Rating', 'NumberOfRatings', 'Year', 'Price$']]
+    collect = []
     for country, url in json_objects.items():
         request = requests.get(wine_url + url)
         for a in range(1, 25):
+            raiting_average, average_raiting_count, price = 0, 0, 0
             if a > 1:
                 request = requests.get(wine_url + url + '/' + str(a))
                 soup = BeautifulSoup(request.text, 'html.parser')
